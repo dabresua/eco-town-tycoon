@@ -17,7 +17,6 @@
   - [5.3. Your town](#53-your-town)
 - [6. Forest](#6-forest)
 - [7. Town](#7-town)
-- [8. TODO](#8-todo)
 
 
 # 2. Eco Town Tycoon
@@ -136,30 +135,3 @@ The button will show `Build` if you fulfill all requirements or `No resources` i
 | Can be built | Can not |
 | -- | -- |
 | ![](img/town-build-button.png) | ![](img/town-no-res-button.png) |
-
-<br>
-
-# 8. TODO
-
-The development is in progress. The following items are in the roadmap:
-
-* ~~Markdown on about page~~
-* ~~About game introduction~~
-* ~~Implement production~~
-* ~~Implement instant buttons page~~
-* ~~Implement loading buttons~~
-* ~~Implement main engine~~
-* ~~Forest information~~
-* ~~Implement buildings page~~
-* ~~Use bootstrap for CSS~~
-* ~~Forester mechanics~~
-* ~~Save and reset~~
-* ~~Expand the README~~
-* Publish
-* Config page
-* Button to stop the foresters
-* Pause button
-* Sandbox mode
-* Adjust equilibrium
-* Improve and uniform design
-* Implement villager's health engine
