@@ -259,29 +259,21 @@ let buildings = {
     druid: 1, // 1
 };
 
-let lumberjackCounter = 0;
-let foresterCounter = 0;
+let forestEvolutionCounter = 0;
 
-/**
- * When a lumberjack finishes with a tree, it cuts it down from the map
- */
-function lumberjackAction() {
-    lumberjackCounter += buildings.lumberjack;
-    if (lumberjackCounter * buildingProd.lumberjack.wood >= 1) {
-        cutDownTree();
-        lumberjackCounter = 0;
-    }
-}
-
-/**
- * The foresters replant the forest
- */
-function foresterAction() {
-    foresterCounter += buildings.forester;
-    if (foresterCounter >= 3) {
-        plantTree();
-        foresterCounter = 0;
-    }
+function forestEvolution() {
+	forestEvolutionCounter -= buildings.lumberjack;
+	if (!forestersPause) {
+		forestEvolutionCounter += 3 * buildings.forester;
+	}
+	// TODO: add var to change the relationship between lumberjack and forester
+	if (forestEvolutionCounter >= 10) {
+		plantTree();
+		forestEvolutionCounter = 0;
+	} else if (forestEvolutionCounter <= -10) {
+		cutDownTree();
+		forestEvolutionCounter = 0;
+	}
 }
 
 /**
@@ -309,10 +301,7 @@ function produce() {
     for (const res in production) {
         resources[res] += production[res];
     }
-    lumberjackAction();
-    if (!forestersPause) {
-        foresterAction();
-    }
+	forestEvolution();
 }
 
 /**
@@ -1183,13 +1172,9 @@ function save() {
             buildings[b]
         );
     }
-    localStorage.setItem(
-        getStorageKey("lumberjackCounter"),
-        lumberjackCounter
-    );
-    localStorage.setItem(
-        getStorageKey("foresterCounter"),
-        foresterCounter
+	localStorage.setItem(
+        getStorageKey("forestEvolutionCounter"),
+        forestEvolutionCounter
     );
     localStorage.setItem(
         getStorageKey("theme"),
@@ -1238,8 +1223,7 @@ function load() {
     for (const b in buildings) {
         buildings[b] = parseFloat(loadKeyDefault("buildings_" + b, buildings[b]));
     }
-    lumberjackCounter = loadKeyDefault("lumberjackCounter", lumberjackCounter);
-    foresterCounter = loadKeyDefault("foresterCounter", foresterCounter);
+	forestEvolutionCounter = loadKeyDefault("forestEvolutionCounter", forestEvolutionCounter);
     theme = loadKeyDefault("theme", theme);
     setTheme();
 }
