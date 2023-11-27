@@ -832,6 +832,18 @@ function switchAction(varName, switchID) {
 }
 
 /**
+ * Creates a switch button with a toggle action
+ * @param {string} varName 
+ * @param {string} switchID 
+ * @param {string} switchMsg 
+ * @returns {HTMLElement}
+ */
+function getBoolSwitch(varName, switchID, switchMsg, initial, disabled) {
+    fun = 'switchAction(\'' + varName + '\',\'' + switchID + '\')';
+    return getSwitch(fun, switchID, switchMsg, initial, disabled);
+}
+
+/**
  * Creates a switch button that calls a function when toggle
  * @param {string} fun 
  * @param {string} switchID 
