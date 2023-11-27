@@ -878,6 +878,43 @@ function getSwitch(fun, switchID, switchMsg, initial, disabled) {
     return div;
 }
 
+/**
+ * Creates an input that sets a variable when changed
+ * @param {number} min 
+ * @param {number} max 
+ * @param {number} def 
+ * @param {string} varName 
+ * @param {string} text 
+ * @param {string} mw 
+ * @returns {htmlElement}
+ */
+function getNumberInput(min, max, def, varName, text, mw) {
+    div = document.createElement("div");
+    div.className = "input-group input-group-sm mb-3";
+    group = document.createElement("div");
+    group.className = "input-group-prepend";
+    msg = document.createElement("span");
+    msg.className = "input-group-text";
+    msg.id = "inputGroup-sizing-sm";
+    msg.innerHTML = text;
+    group.appendChild(msg);
+    div.appendChild(group);
+    myInput = document.createElement("input");
+    myInput.setAttribute("type", "number");
+    myInput.setAttribute("class", "form-control");
+    myInput.style = "max-width:" + mw;
+    myInput.setAttribute("aria-describedby", "inputGroup-sizing-sm");
+    myInput.setAttribute("min", min);
+    myInput.setAttribute("max", max);
+    myInput.setAttribute("value", def);
+    myInput.setAttribute(
+        "oninput",
+        "inputBuildingsCallback(this.value,'" + varName + "')"
+    );
+    div.appendChild(myInput);
+    return div;
+}
+
 /* --------------- Engine --------------- */
 
 gamePause = false;
