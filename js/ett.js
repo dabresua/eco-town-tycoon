@@ -616,6 +616,27 @@ function getWorldTable() {
  * @returns {HTMLElement}
  */
 function getWorldProgressBar() {
+    master = document.createElement("div");
+    r1 = document.createElement("div");
+    r1.className = "container-fluid";
+    master.appendChild(r1);
+    r2 = document.createElement("div");
+    r2.className = "container-fluid";
+    master.appendChild(r2);
+
+    span = document.createElement("span");
+    span.className = "text-" + theme;
+    if (gamePause) {
+        span.innerHTML = "Game paused";
+    } else if (forestersPause) {
+        span.innerHTML = "Foresters paused";
+    } else if (sandboxMode) {
+        span.innerHTML = "Sandbox Mode!!!";
+    } else {
+        span.innerHTML = "Running";
+    }
+    r1.appendChild(span);
+
     div = document.createElement("div");
     div.className = "progress";
     div.style = "min-width: 200px"
@@ -647,7 +668,9 @@ function getWorldProgressBar() {
     divWasteland.style = stWasteland;
     divWasteland.innerHTML = wastelandSize;
     div.appendChild(divWasteland);
-    return div;
+
+    r2.appendChild(div);
+    return master;
 }
 
 /**
