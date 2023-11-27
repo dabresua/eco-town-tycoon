@@ -1115,6 +1115,12 @@ function update() {
             break;
         case "about":
             break;
+        case "config":
+            if (lastSandboxMode != sandboxMode) {
+                lastSandboxMode = sandboxMode;
+                document.getElementById('pageBody').innerHTML = getPageConfig();
+            }
+            break;
     }
 }
 
