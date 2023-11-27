@@ -301,10 +301,7 @@ function produce() {
     for (const res in production) {
         resources[res] += production[res];
     }
-    lumberjackAction();
-    if (!forestersPause) {
-        foresterAction();
-    }
+	forestEvolution();
 }
 
 /**
