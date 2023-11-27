@@ -1172,13 +1172,9 @@ function save() {
             buildings[b]
         );
     }
-    localStorage.setItem(
-        getStorageKey("lumberjackCounter"),
-        lumberjackCounter
-    );
-    localStorage.setItem(
-        getStorageKey("foresterCounter"),
-        foresterCounter
+	localStorage.setItem(
+        getStorageKey("forestEvolutionCounter"),
+        forestEvolutionCounter
     );
     localStorage.setItem(
         getStorageKey("theme"),
@@ -1227,8 +1223,7 @@ function load() {
     for (const b in buildings) {
         buildings[b] = parseFloat(loadKeyDefault("buildings_" + b, buildings[b]));
     }
-    lumberjackCounter = loadKeyDefault("lumberjackCounter", lumberjackCounter);
-    foresterCounter = loadKeyDefault("foresterCounter", foresterCounter);
+	forestEvolutionCounter = loadKeyDefault("forestEvolutionCounter", forestEvolutionCounter);
     theme = loadKeyDefault("theme", theme);
     setTheme();
 }
