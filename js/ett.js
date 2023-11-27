@@ -930,6 +930,8 @@ function getNumberInput(min, max, def, varName, text, mw) {
 
 gamePause = false;
 forestersPause = false;
+sandboxMode = false;
+lastSandboxMode = false;
 
 /**
  * Function called after the body loads
