@@ -817,6 +817,20 @@ function getCard(cardsFunction, cardsEmoji, cardsTitle, quantityDesc, cardsDesc,
     return div;
 }
 
+/* --------------- Switches --------------- */
+
+/**
+ * Callback for a switch
+ * @param {string} varName 
+ * @param {string} switchID 
+ */
+function switchAction(varName, switchID) {
+    var switchState = document.getElementById(switchID).checked;
+    window[varName] = switchState;
+    updateWorldProgressBar();
+    update();
+}
+
 /**
  * Creates a switch button that calls a function when toggle
  * @param {string} fun 
