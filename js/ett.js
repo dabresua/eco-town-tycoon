@@ -878,6 +878,17 @@ function getSwitch(fun, switchID, switchMsg, initial, disabled) {
     return div;
 }
 
+/* --------------- Inputs --------------- */
+
+/**
+ * Callback for an input
+ * @param {number} val 
+ * @param {string} building
+ */
+function inputBuildingsCallback(val, building) {
+    buildings[building] = val;
+}
+
 /**
  * Creates an input that sets a variable when changed
  * @param {number} min 
