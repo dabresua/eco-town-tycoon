@@ -818,6 +818,8 @@ function getCard(cardsFunction, cardsEmoji, cardsTitle, quantityDesc, cardsDesc,
 }
 
 /* --------------- Engine --------------- */
+
+gamePause = false;
 forestersPause = false;
 
 /**
@@ -837,9 +839,11 @@ function init() {
  */
 function run() {
     setProduction();
-    produce();
-    updateButton();
-    update();
+    if (!gamePause) {
+        produce();
+        updateButton();
+        update();
+    }
     setTimeout("run()", 1000);
 }
 
