@@ -979,6 +979,13 @@ function updateButton() {
  * Function to update the pages
  */
 function update() {
+    if (sandboxMode) {
+        document.getElementById('saveButton').disabled = true;
+        document.getElementById('resetButton').disabled = true;
+    } else {
+        document.getElementById('saveButton').disabled = false;
+        document.getElementById('resetButton').disabled = false;
+    }
     switch (currentPage) {
         case "summary":
             document.getElementById('pageBody').innerHTML = getPageSummary();
