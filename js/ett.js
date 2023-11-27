@@ -1011,6 +1011,10 @@ function save() {
         getStorageKey("foresterCounter"),
         foresterCounter
     );
+    localStorage.setItem(
+        getStorageKey("theme"),
+        theme
+    );
 }
 
 /**
@@ -1056,6 +1060,9 @@ function load() {
     }
     lumberjackCounter = loadKeyDefault("lumberjackCounter", lumberjackCounter);
     foresterCounter = loadKeyDefault("foresterCounter", foresterCounter);
+    theme = loadKeyDefault("theme", theme);
+    setTheme();
+}
 
 /* --------------- Dark mode --------------- */
 theme = "light";
