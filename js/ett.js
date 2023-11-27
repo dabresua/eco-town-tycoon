@@ -261,26 +261,19 @@ let buildings = {
 
 let forestEvolutionCounter = 0;
 
-/**
- * When a lumberjack finishes with a tree, it cuts it down from the map
- */
-function lumberjackAction() {
-    lumberjackCounter += buildings.lumberjack;
-    if (lumberjackCounter * buildingProd.lumberjack.wood >= 1) {
-        cutDownTree();
-        lumberjackCounter = 0;
-    }
-}
-
-/**
- * The foresters replant the forest
- */
-function foresterAction() {
-    foresterCounter += buildings.forester;
-    if (foresterCounter >= 3) {
-        plantTree();
-        foresterCounter = 0;
-    }
+function forestEvolution() {
+	forestEvolutionCounter -= buildings.lumberjack;
+	if (!forestersPause) {
+		forestEvolutionCounter += 3 * buildings.forester;
+	}
+	// TODO: add var to change the relationship between lumberjack and forester
+	if (forestEvolutionCounter >= 10) {
+		plantTree();
+		forestEvolutionCounter = 0;
+	} else if (forestEvolutionCounter <= -10) {
+		cutDownTree();
+		forestEvolutionCounter = 0;
+	}
 }
 
 /**
