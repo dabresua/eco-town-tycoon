@@ -817,6 +817,33 @@ function getCard(cardsFunction, cardsEmoji, cardsTitle, quantityDesc, cardsDesc,
     return div;
 }
 
+/**
+ * Creates a switch button that calls a function when toggle
+ * @param {string} fun 
+ * @param {string} switchID 
+ * @param {string} switchMsg 
+ * @param {boolean} initial 
+ * @returns {htmlElement}
+ */
+function getSwitch(fun, switchID, switchMsg, initial, disabled) {
+    div = document.createElement("div");
+    switchButton = '<div class="form-check form-switch">'
+    switchButton += '<input class="form-check-input" type="checkbox" id="' + switchID + '"';
+    if (initial) {
+        switchButton += ' checked';
+    }
+    switchButton += ' onchange="' + fun + '"';
+    if (disabled) {
+        switchButton += ' disabled'
+    }
+    switchButton += '>'
+    switchButton += '<label class="form-check-label" for="' + switchID + '">'
+    switchButton += switchMsg + '</label>';
+    switchButton += '</div>'
+    div.innerHTML = switchButton.trim();
+    return div;
+}
+
 /* --------------- Engine --------------- */
 
 gamePause = false;
