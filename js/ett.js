@@ -310,7 +310,9 @@ function produce() {
         resources[res] += production[res];
     }
     lumberjackAction();
-    foresterAction();
+    if (!forestersPause) {
+        foresterAction();
+    }
 }
 
 /**
@@ -519,6 +521,100 @@ function getPageAbout() {
     ]);
 }
 
+/**
+ * Generates the config page html body
+ * @returns {innerHTML}
+ */
+function getPageConfig() {
+    currentPage = "config";
+    config = document.createElement("div");
+    config.className = "container-fluid";
+    config.appendChild(getBoolSwitch(
+        "gamePause",
+        "gamePauseSW",
+        "Pause the game",
+        gamePause,
+        false));
+    config.appendChild(getBoolSwitch(
+        "forestersPause",
+        "forestersPauseSW",
+        "Pause the foresters",
+        forestersPause,
+        false));
+    config.appendChild(getBoolSwitch(
+        "sandboxMode",
+        "sandboxModeSW",
+        "Sandbox Mode",
+        sandboxMode,
+        sandboxMode));
+    config.appendChild(darkModeSwitch());
+    if (sandboxMode) {
+        separation = document.createElement("hr");
+        config.appendChild(separation);
+        row = document.createElement("div");
+        row.className = "row";
+        config.appendChild(row);
+        c1 = document.createElement("div");
+        c1.className = "col";
+        row.appendChild(c1);
+        title = document.createElement("h2");
+        title.innerHTML = "Town";
+        c1.appendChild(title);
+        for (const building in buildings) {
+            c1.appendChild(getNumberInput(
+                0,
+                100,
+                buildings[building],
+                building,
+                buildingNames[building],
+                "60px"
+            ));
+        }
+        c2 = document.createElement("div");
+        c2.className = "col";
+        row.appendChild(c2);
+        title = document.createElement("h2");
+        title.innerHTML = "Production settings";
+        c2.appendChild(title);
+        for (const bp in buildingProd) {
+            prodBuilding = false;
+            r1 = document.createElement("div");
+            r1.className = "row";
+            tit = document.createElement("h5");
+            tit.innerHTML = buildingNames[bp];
+            r1.appendChild(tit);
+            r2 = document.createElement("ul");
+            r2.className = "nav";
+            const bbp = buildingProd[bp];
+            for (const res in bbp) {
+                prodBuilding = true;
+                c = document.createElement("li");
+                c.className = "nav-item";
+                r2.appendChild(c);
+                c.appendChild(
+                    getNumberInput(
+                        -10,
+                        10,
+                        bbp[res],
+                        "buildingProd[" + bp + "]",
+                        emojis[res],
+                        "80px"
+                        )
+                        );
+                    }
+            if (prodBuilding) {
+                c2.appendChild(r1);
+                c2.appendChild(r2);
+                sp = document.createElement("hr");
+                c2.appendChild(sp);
+            }
+        }
+    }
+    return getPage([
+        config
+    ]);
+}
+
 /* --------------- Table --------------- */
 
 /**
@@ -614,6 +710,27 @@ function getWorldTable() {
  * @returns {HTMLElement}
  */
 function getWorldProgressBar() {
+    master = document.createElement("div");
+    r1 = document.createElement("div");
+    r1.className = "container-fluid";
+    master.appendChild(r1);
+    r2 = document.createElement("div");
+    r2.className = "container-fluid";
+    master.appendChild(r2);
+
+    span = document.createElement("span");
+    span.className = "text-" + theme;
+    if (gamePause) {
+        span.innerHTML = "Game paused";
+    } else if (forestersPause) {
+        span.innerHTML = "Foresters paused";
+    } else if (sandboxMode) {
+        span.innerHTML = "Sandbox Mode!!!";
+    } else {
+        span.innerHTML = "Running";
+    }
+    r1.appendChild(span);
+
     div = document.createElement("div");
     div.className = "progress";
     div.style = "min-width: 200px"
@@ -645,7 +762,9 @@ function getWorldProgressBar() {
     divWasteland.style = stWasteland;
     divWasteland.innerHTML = wastelandSize;
     div.appendChild(divWasteland);
-    return div;
+
+    r2.appendChild(div);
+    return master;
 }
 
 /**
@@ -815,7 +934,121 @@ function getCard(cardsFunction, cardsEmoji, cardsTitle, quantityDesc, cardsDesc,
     return div;
 }
 
+/* --------------- Switches --------------- */
+
+/**
+ * Callback for a switch
+ * @param {string} varName 
+ * @param {string} switchID 
+ */
+function switchAction(varName, switchID) {
+    var switchState = document.getElementById(switchID).checked;
+    window[varName] = switchState;
+    updateWorldProgressBar();
+    update();
+}
+
+/**
+ * Creates a switch button with a toggle action
+ * @param {string} varName 
+ * @param {string} switchID 
+ * @param {string} switchMsg 
+ * @returns {HTMLElement}
+ */
+function getBoolSwitch(varName, switchID, switchMsg, initial, disabled) {
+    fun = 'switchAction(\'' + varName + '\',\'' + switchID + '\')';
+    return getSwitch(fun, switchID, switchMsg, initial, disabled);
+}
+
+/**
+ * Creates a switch button with toggle action for dark mode
+ * @returns {htmlElement}
+ */
+function darkModeSwitch() {
+    return getSwitch("darkModeCallback()", "DarkModeSW", "Dark Mode", theme == "dark", false);
+}
+
+/**
+ * Creates a switch button that calls a function when toggle
+ * @param {string} fun 
+ * @param {string} switchID 
+ * @param {string} switchMsg 
+ * @param {boolean} initial 
+ * @returns {htmlElement}
+ */
+function getSwitch(fun, switchID, switchMsg, initial, disabled) {
+    div = document.createElement("div");
+    switchButton = '<div class="form-check form-switch">'
+    switchButton += '<input class="form-check-input" type="checkbox" id="' + switchID + '"';
+    if (initial) {
+        switchButton += ' checked';
+    }
+    switchButton += ' onchange="' + fun + '"';
+    if (disabled) {
+        switchButton += ' disabled'
+    }
+    switchButton += '>'
+    switchButton += '<label class="form-check-label" for="' + switchID + '">'
+    switchButton += switchMsg + '</label>';
+    switchButton += '</div>'
+    div.innerHTML = switchButton.trim();
+    return div;
+}
+
+/* --------------- Inputs --------------- */
+
+/**
+ * Callback for an input
+ * @param {number} val 
+ * @param {string} building
+ */
+function inputBuildingsCallback(val, building) {
+    buildings[building] = val;
+}
+
+/**
+ * Creates an input that sets a variable when changed
+ * @param {number} min 
+ * @param {number} max 
+ * @param {number} def 
+ * @param {string} varName 
+ * @param {string} text 
+ * @param {string} mw 
+ * @returns {htmlElement}
+ */
+function getNumberInput(min, max, def, varName, text, mw) {
+    div = document.createElement("div");
+    div.className = "input-group input-group-sm mb-3";
+    group = document.createElement("div");
+    group.className = "input-group-prepend";
+    msg = document.createElement("span");
+    msg.className = "input-group-text";
+    msg.id = "inputGroup-sizing-sm";
+    msg.innerHTML = text;
+    group.appendChild(msg);
+    div.appendChild(group);
+    myInput = document.createElement("input");
+    myInput.setAttribute("type", "number");
+    myInput.setAttribute("class", "form-control");
+    myInput.style = "max-width:" + mw;
+    myInput.setAttribute("aria-describedby", "inputGroup-sizing-sm");
+    myInput.setAttribute("min", min);
+    myInput.setAttribute("max", max);
+    myInput.setAttribute("value", def);
+    myInput.setAttribute(
+        "oninput",
+        "inputBuildingsCallback(this.value,'" + varName + "')"
+    );
+    div.appendChild(myInput);
+    return div;
+}
+
 /* --------------- Engine --------------- */
+
+gamePause = false;
+forestersPause = false;
+sandboxMode = false;
+lastSandboxMode = false;
 
 /**
  * Function called after the body loads
@@ -834,9 +1067,11 @@ function init() {
  */
 function run() {
     setProduction();
-    produce();
-    updateButton();
-    update();
+    if (!gamePause) {
+        produce();
+        updateButton();
+        update();
+    }
     setTimeout("run()", 1000);
 }
 
@@ -861,6 +1096,13 @@ function updateButton() {
  * Function to update the pages
  */
 function update() {
+    if (sandboxMode) {
+        document.getElementById('saveButton').disabled = true;
+        document.getElementById('resetButton').disabled = true;
+    } else {
+        document.getElementById('saveButton').disabled = false;
+        document.getElementById('resetButton').disabled = false;
+    }
     switch (currentPage) {
         case "summary":
             document.getElementById('pageBody').innerHTML = getPageSummary();
@@ -872,6 +1114,12 @@ function update() {
             document.getElementById('pageBody').innerHTML = getPageBuildings();
             break;
         case "about":
+            break;
+        case "config":
+            if (lastSandboxMode != sandboxMode) {
+                lastSandboxMode = sandboxMode;
+                document.getElementById('pageBody').innerHTML = getPageConfig();
+            }
             break;
     }
 }
@@ -943,6 +1191,10 @@ function save() {
         getStorageKey("foresterCounter"),
         foresterCounter
     );
+    localStorage.setItem(
+        getStorageKey("theme"),
+        theme
+    );
 }
 
 /**
@@ -988,4 +1240,36 @@ function load() {
     }
     lumberjackCounter = loadKeyDefault("lumberjackCounter", lumberjackCounter);
     foresterCounter = loadKeyDefault("foresterCounter", foresterCounter);
+    theme = loadKeyDefault("theme", theme);
+    setTheme();
+}
+
+/* --------------- Dark mode --------------- */
+theme = "light";
+navBar = "navbar-dark bg-dark";
+
+/**
+ * Function that switches between dark and light modes
+ */
+function darkModeCallback() {
+    if ("light" == theme) {
+        theme = "dark";
+    } else {
+        theme = "light";
+    }
+    setTheme();
+}
+
+/**
+ * Function to set the light or dark theme
+ */
+function setTheme() {
+    var htmlElement = document.getElementsByTagName("html")[0];
+    htmlElement.setAttribute("data-bs-theme", theme);
+    if ("light" == theme) {
+        document.getElementById("MenuNavBar").className = "navbar navbar-expand-lg navbar-dark bg-dark";
+    } else {
+        document.getElementById("MenuNavBar").className = "navbar navbar-expand-lg navbar-light bg-light";
+    }
+    updateWorldProgressBar();
 }

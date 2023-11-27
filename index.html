@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en-US" data-bs-theme="light">
 <head>
     <title>Eco Town Tycoon</title>
 
@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="MenuNavBar">
         <div class="container-fluid">
             <div class="row">
                 <div class="btn-group navbar-nav me-auto">
@@ -73,9 +73,12 @@
                     <button type="button" class="btn btn-outline-warning"
                     onclick="document.getElementById('pageBody').innerHTML = getPageBuildings()">
                     &#127968 Town</button>
-                    <button type="button" class="btn btn-outline-danger"
+                    <button type="button" class="btn btn-outline-info"
                     onclick="document.getElementById('pageBody').innerHTML = getPageAbout()">
                     &#128196 About</button>
+                    <button type="button" class="btn btn-outline-danger"
+                    onclick="document.getElementById('pageBody').innerHTML = getPageConfig()">
+                    &#9881 Config</button>
                 </div>
             </div>
             <div class="row">
@@ -84,9 +87,11 @@
             <div class="row">
                 <div class="btn-group navbar-nav me-rigth">
                     <button type="button" class="btn btn-outline-secondary"
+                    id="saveButton"
                     data-bs-toggle="modal" data-bs-target="#saveModal"
                     data-bs-toggle="tooltip" title="Save the progress">&#128190 Save</button>
                     <button type="button" class="btn btn-outline-secondary"
+                    id="resetButton"
                     data-bs-toggle="modal" data-bs-target="#resetModal"
                     data-bs-toggle="tooltip" title="Delete saved data">&#128465 Reset</button>
                 </div>

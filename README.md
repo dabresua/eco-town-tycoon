@@ -17,6 +17,13 @@
   - [5.3. Your town](#53-your-town)
 - [6. Forest](#6-forest)
 - [7. Town](#7-town)
+- [8. Config](#8-config)
+  - [8.1. Pause the game](#81-pause-the-game)
+  - [8.2. Pause the foresters](#82-pause-the-foresters)
+  - [8.3. Sandbox Mode](#83-sandbox-mode)
+    - [8.3.1. Town](#831-town)
+    - [8.3.2. Production settings](#832-production-settings)
+  - [8.4. Dark Mode](#84-dark-mode)
 
 
 # 2. Eco Town Tycoon
@@ -31,7 +38,7 @@ The menu allows the user to navigate through the game itself and provides access
 
 ![](img/menu-main.png)
 
-Provides access to the **Summary**, the **Forest**, the **Town** and the about page (this one).
+Provides access to the **Summary**, the **Forest**, the **Town**, the about page (this one) and the **Config**.
 
 ## 3.2. World composition
 
@@ -135,3 +142,49 @@ The button will show `Build` if you fulfill all requirements or `No resources` i
 | Can be built | Can not |
 | -- | -- |
 | ![](img/town-build-button.png) | ![](img/town-no-res-button.png) |
+
+<br>
+
+# 8. Config
+
+The configuration page allows the user to modify the game settings such as:
+* Pausing the game
+* Pausing the foresters
+* Entering the sandbox mode
+* Changing the visuals to Dark Mode
+
+![](img/config-all.png)
+
+## 8.1. Pause the game
+
+When the game is paused, the production and the forest actions stop.
+
+![](img/config-pause.png)
+
+## 8.2. Pause the foresters
+
+If the foresters are paused, they won't replant trees in the forest. Use this to make room for buildings.
+
+![](img/config-foresters.png)
+
+## 8.3. Sandbox Mode
+
+The sandbox mode allows the user to freely modify its town and configure production settings. **Saving is not allowed in this mode**. To exit sandbox mode, the user must reload the game.
+
+![](img/config-sandbox-1.png)
+
+### 8.3.1. Town
+
+User can modify the number of buildings freely.
+
+### 8.3.2. Production settings
+
+User can modify the production of every building.
+
+![](img/config-sandbox-2.png)
+
+## 8.4. Dark Mode
+
+Allows the user to switch between `light` and `dark` modes.
+
+![](img/config-dark.png)
