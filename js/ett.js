@@ -521,6 +521,100 @@ function getPageAbout() {
     ]);
 }
 
+/**
+ * Generates the config page html body
+ * @returns {innerHTML}
+ */
+function getPageConfig() {
+    currentPage = "config";
+    config = document.createElement("div");
+    config.className = "container-fluid";
+    config.appendChild(getBoolSwitch(
+        "gamePause",
+        "gamePauseSW",
+        "Pause the game",
+        gamePause,
+        false));
+    config.appendChild(getBoolSwitch(
+        "forestersPause",
+        "forestersPauseSW",
+        "Pause the foresters",
+        forestersPause,
+        false));
+    config.appendChild(getBoolSwitch(
+        "sandboxMode",
+        "sandboxModeSW",
+        "Sandbox Mode",
+        sandboxMode,
+        sandboxMode));
+    config.appendChild(darkModeSwitch());
+    if (sandboxMode) {
+        separation = document.createElement("hr");
+        config.appendChild(separation);
+        row = document.createElement("div");
+        row.className = "row";
+        config.appendChild(row);
+        c1 = document.createElement("div");
+        c1.className = "col";
+        row.appendChild(c1);
+        title = document.createElement("h2");
+        title.innerHTML = "Town";
+        c1.appendChild(title);
+        for (const building in buildings) {
+            c1.appendChild(getNumberInput(
+                0,
+                100,
+                buildings[building],
+                building,
+                buildingNames[building],
+                "60px"
+            ));
+        }
+        c2 = document.createElement("div");
+        c2.className = "col";
+        row.appendChild(c2);
+        title = document.createElement("h2");
+        title.innerHTML = "Production settings";
+        c2.appendChild(title);
+        for (const bp in buildingProd) {
+            prodBuilding = false;
+            r1 = document.createElement("div");
+            r1.className = "row";
+            tit = document.createElement("h5");
+            tit.innerHTML = buildingNames[bp];
+            r1.appendChild(tit);
+            r2 = document.createElement("ul");
+            r2.className = "nav";
+            const bbp = buildingProd[bp];
+            for (const res in bbp) {
+                prodBuilding = true;
+                c = document.createElement("li");
+                c.className = "nav-item";
+                r2.appendChild(c);
+                c.appendChild(
+                    getNumberInput(
+                        -10,
+                        10,
+                        bbp[res],
+                        "buildingProd[" + bp + "]",
+                        emojis[res],
+                        "80px"
+                        )
+                        );
+                    }
+            if (prodBuilding) {
+                c2.appendChild(r1);
+                c2.appendChild(r2);
+                sp = document.createElement("hr");
+                c2.appendChild(sp);
+            }
+        }
+    }
+    return getPage([
+        config
+    ]);
+}
+
 /* --------------- Table --------------- */
 
 /**
