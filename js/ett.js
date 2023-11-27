@@ -844,6 +844,14 @@ function getBoolSwitch(varName, switchID, switchMsg, initial, disabled) {
 }
 
 /**
+ * Creates a switch button with toggle action for dark mode
+ * @returns {htmlElement}
+ */
+function darkModeSwitch() {
+    return getSwitch("darkModeCallback()", "DarkModeSW", "Dark Mode", theme == "dark", false);
+}
+
+/**
  * Creates a switch button that calls a function when toggle
  * @param {string} fun 
  * @param {string} switchID 
