@@ -1056,4 +1056,33 @@ function load() {
     }
     lumberjackCounter = loadKeyDefault("lumberjackCounter", lumberjackCounter);
     foresterCounter = loadKeyDefault("foresterCounter", foresterCounter);
+
+/* --------------- Dark mode --------------- */
+theme = "light";
+navBar = "navbar-dark bg-dark";
+
+/**
+ * Function that switches between dark and light modes
+ */
+function darkModeCallback() {
+    if ("light" == theme) {
+        theme = "dark";
+    } else {
+        theme = "light";
+    }
+    setTheme();
+}
+
+/**
+ * Function to set the light or dark theme
+ */
+function setTheme() {
+    var htmlElement = document.getElementsByTagName("html")[0];
+    htmlElement.setAttribute("data-bs-theme", theme);
+    if ("light" == theme) {
+        document.getElementById("MenuNavBar").className = "navbar navbar-expand-lg navbar-dark bg-dark";
+    } else {
+        document.getElementById("MenuNavBar").className = "navbar navbar-expand-lg navbar-light bg-light";
+    }
+    updateWorldProgressBar();
 }
