@@ -259,8 +259,7 @@ let buildings = {
     druid: 1, // 1
 };
 
-let lumberjackCounter = 0;
-let foresterCounter = 0;
+let forestEvolutionCounter = 0;
 
 /**
  * When a lumberjack finishes with a tree, it cuts it down from the map
