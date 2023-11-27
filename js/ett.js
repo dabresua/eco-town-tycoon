@@ -310,7 +310,9 @@ function produce() {
         resources[res] += production[res];
     }
     lumberjackAction();
-    foresterAction();
+    if (!forestersPause) {
+        foresterAction();
+    }
 }
 
 /**
@@ -816,6 +818,7 @@ function getCard(cardsFunction, cardsEmoji, cardsTitle, quantityDesc, cardsDesc,
 }
 
 /* --------------- Engine --------------- */
+forestersPause = false;
 
 /**
  * Function called after the body loads
