@@ -60,21 +60,19 @@ function plantTree() {
 }
 
 /* --------------- Forest capacity --------------- */
-const forestMultipliers = {
-    wood: 1,
-    firewood: 0.5,
-    meat: 0.01,
-    veggies: 0.1,
-    medicine: 0.02,
+const forestRequirements = {
+    wood: {tiles: 1, building: "lumberjack"},
+    firewood: {tiles: 2, building: "collector"},
+    meat: {tiles: 100, building: "hunter"},
+    medicine: {tiles: 50, building: "druid"},
 };
 
 /**
- * Calculates the capacity of the forest for certain resource
- * @param {string} resource 
- * @returns {number} resource capacity
+ * Calculates the maximum production for a certain resource in the forest
+ * @param {string} res 
  */
-function getCapacity(resource) {
-    return getForestSize() * forestMultipliers[resource];
+function getForestCapacity(res) {
+    return Math.floor(getForestSize() / forestRequirements[res].tiles)
 }
 
 /* --------------- Manual actions --------------- */
@@ -287,6 +285,13 @@ function setProduction() {
         q = buildings[building];
         if (q > 0) {
             for (const resource in buildingProd[building]) {
+                fr = forestRequirements[resource];
+                if (undefined != fr) {
+                    fc = getForestCapacity(resource);
+                    if (fc < q) {
+                        q = fc
+                    }
+                }
                 multiplier = buildingProd[building][resource];
                 production[resource] += q * multiplier;
             }
@@ -363,7 +368,7 @@ function getPageSummary() {
     currentPage = "summary";
     return getPage([
         getResourcesTable(),
-        getForestCapacity(),
+        getForestCapacityTable(),
         getBuildingsTable()
     ]);
 }
@@ -760,21 +765,20 @@ function getWorldProgressBar() {
  * Builds a table with the forest capacity
  * @returns {HTMLTableElement}
  */
-function getForestCapacity() {
+function getForestCapacityTable() {
     let content = [];
     let index = 0;
-    fs = getForestSize();
-    for (const fm in forestMultipliers) {
+    for (const fr in forestRequirements) {
         content[index] = [];
-        content[index][0] = fm + " " + emojis[fm];;
-        content[index][1] = "1 each " + 1/forestMultipliers[fm] + " titles";
-        cap = forestMultipliers[fm] * fs;
-        content[index][2] = Math.floor(cap);
-        content[index][3] = cap;
+        content[index][0] = fr + " " + emojis[fr];
+        content[index][1] = buildingNames[forestRequirements[fr].building];
+        content[index][2] = forestRequirements[fr].tiles;
+        content[index][3] = getForestCapacity(fr);
+        content[index][4] = buildings[forestRequirements[fr].building];
         index++;
     }
     return getTable(
-        ["Resource", "Generation", "Capacity", "Real capacity"],
+        ["Resource", "Building", "Tiles per building", "Capacity", "Buildings"],
         content,
         "Forest capacity"
     );
