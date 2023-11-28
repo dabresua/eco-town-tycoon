@@ -68,12 +68,11 @@ const forestRequirements = {
 };
 
 /**
- * Calculates the capacity of the forest for certain resource
- * @param {string} resource 
- * @returns {number} resource capacity
+ * Calculates the maximum production for a certain resource in the forest
+ * @param {string} res 
  */
-function getCapacity(resource) {
-    return getForestSize() * forestMultipliers[resource];
+function getForestCapacity(res) {
+    return Math.floor(getForestSize() / forestRequirements[res].tiles)
 }
 
 /* --------------- Manual actions --------------- */
