@@ -24,6 +24,7 @@
     - [8.3.1. Town](#831-town)
     - [8.3.2. Production settings](#832-production-settings)
   - [8.4. Dark Mode](#84-dark-mode)
+  - [8.5. Auto save](#85-auto-save)
 
 
 # 2. Eco Town Tycoon
@@ -152,6 +153,7 @@ The configuration page allows the user to modify the game settings such as:
 * Pausing the foresters
 * Entering the sandbox mode
 * Changing the visuals to Dark Mode
+* Enabling the auto save function
 
 ![](img/config-all.png)
 
@@ -188,3 +190,7 @@ User can modify the production of every building.
 Allows the user to switch between `light` and `dark` modes.
 
 ![](img/config-dark.png)
+
+## 8.5. Auto save
+
+The auto save functionality saves the progress for you every minute. If sandbox mode is enabled, the auto saving won't work.
