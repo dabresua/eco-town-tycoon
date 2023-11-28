@@ -285,6 +285,13 @@ function setProduction() {
         q = buildings[building];
         if (q > 0) {
             for (const resource in buildingProd[building]) {
+                fr = forestRequirements[resource];
+                if (undefined != fr) {
+                    fc = getForestCapacity(resource);
+                    if (fc < q) {
+                        q = fc
+                    }
+                }
                 multiplier = buildingProd[building][resource];
                 production[resource] += q * multiplier;
             }
