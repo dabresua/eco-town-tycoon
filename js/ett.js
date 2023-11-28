@@ -1067,6 +1067,7 @@ function run() {
         updateButton();
         update();
     }
+    autoSaving();
     setTimeout("run()", 1000);
 }
 
