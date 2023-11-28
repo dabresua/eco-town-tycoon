@@ -1131,6 +1131,8 @@ function autoSaving() {
     }
 }
 
+/* --------------- Embedded database --------------- */
+
 /**
  * Gets the storage full key for a certain parameter
  * @param {string} param 
