@@ -60,12 +60,11 @@ function plantTree() {
 }
 
 /* --------------- Forest capacity --------------- */
-const forestMultipliers = {
-    wood: 1,
-    firewood: 0.5,
-    meat: 0.01,
-    veggies: 0.1,
-    medicine: 0.02,
+const forestRequirements = {
+    wood: {tiles: 1, building: "lumberjack"},
+    firewood: {tiles: 2, building: "collector"},
+    meat: {tiles: 100, building: "hunter"},
+    medicine: {tiles: 50, building: "druid"},
 };
 
 /**
