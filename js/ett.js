@@ -758,21 +758,20 @@ function getWorldProgressBar() {
  * Builds a table with the forest capacity
  * @returns {HTMLTableElement}
  */
-function getForestCapacity() {
+function getForestCapacityTable() {
     let content = [];
     let index = 0;
-    fs = getForestSize();
-    for (const fm in forestMultipliers) {
+    for (const fr in forestRequirements) {
         content[index] = [];
-        content[index][0] = fm + " " + emojis[fm];;
-        content[index][1] = "1 each " + 1/forestMultipliers[fm] + " titles";
-        cap = forestMultipliers[fm] * fs;
-        content[index][2] = Math.floor(cap);
-        content[index][3] = cap;
+        content[index][0] = fr + " " + emojis[fr];
+        content[index][1] = buildingNames[forestRequirements[fr].building];
+        content[index][2] = forestRequirements[fr].tiles;
+        content[index][3] = getForestCapacity(fr);
+        content[index][4] = buildings[forestRequirements[fr].building];
         index++;
     }
     return getTable(
-        ["Resource", "Generation", "Capacity", "Real capacity"],
+        ["Resource", "Building", "Tiles per building", "Capacity", "Buildings"],
         content,
         "Forest capacity"
     );
