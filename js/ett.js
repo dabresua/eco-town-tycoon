@@ -542,6 +542,12 @@ function getPageConfig() {
         sandboxMode,
         sandboxMode));
     config.appendChild(darkModeSwitch());
+    config.appendChild(getBoolSwitch(
+        "autoSave",
+        "autoSaveSW",
+        "Auto Save",
+        autoSave && !sandboxMode,
+        sandboxMode));
     if (sandboxMode) {
         separation = document.createElement("hr");
         config.appendChild(separation);
