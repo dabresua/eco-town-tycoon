@@ -1209,6 +1209,10 @@ function save() {
         getStorageKey("theme"),
         theme
     );
+    localStorage.setItem(
+        getStorageKey("autoSave"),
+        autoSave
+    );
 }
 
 /**
@@ -1255,6 +1259,7 @@ function load() {
 	forestEvolutionCounter = loadKeyDefault("forestEvolutionCounter", forestEvolutionCounter);
     theme = loadKeyDefault("theme", theme);
     setTheme();
+    autoSave = loadKeyDefault("autoSave", autoSave);
 }
 
 /* --------------- Dark mode --------------- */
