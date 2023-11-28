@@ -542,6 +542,12 @@ function getPageConfig() {
         sandboxMode,
         sandboxMode));
     config.appendChild(darkModeSwitch());
+    config.appendChild(getBoolSwitch(
+        "autoSave",
+        "autoSaveSW",
+        "Auto Save",
+        autoSave && !sandboxMode,
+        sandboxMode));
     if (sandboxMode) {
         separation = document.createElement("hr");
         config.appendChild(separation);
@@ -720,6 +726,8 @@ function getWorldProgressBar() {
         span.innerHTML = "Foresters paused";
     } else if (sandboxMode) {
         span.innerHTML = "Sandbox Mode!!!";
+    } else if (autoSave && autoSaveCounter < 3) {
+        span.innerHTML = "Progress saved";
     } else {
         span.innerHTML = "Running";
     }
@@ -1042,6 +1050,8 @@ gamePause = false;
 forestersPause = false;
 sandboxMode = false;
 lastSandboxMode = false;
+autoSave = false;
+autoSaveCounter = 0;
 
 /**
  * Function called after the body loads
@@ -1065,6 +1075,7 @@ function run() {
         updateButton();
         update();
     }
+    autoSaving();
     setTimeout("run()", 1000);
 }
 
@@ -1116,6 +1127,20 @@ function update() {
             break;
     }
 }
+
+function autoSaving() {
+    if (!sandboxMode && autoSave) {
+        autoSaveCounter++;
+        if (autoSaveCounter >= 60) {
+            autoSaveCounter = 0;
+        }
+        if (autoSaveCounter == 0) {
+            save();
+        }
+    }
+}
+
+/* --------------- Embedded database --------------- */
 
 /**
  * Gets the storage full key for a certain parameter
