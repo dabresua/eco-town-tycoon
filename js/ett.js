@@ -361,7 +361,7 @@ function getPageSummary() {
     currentPage = "summary";
     return getPage([
         getResourcesTable(),
-        getForestCapacity(),
+        getForestCapacityTable(),
         getBuildingsTable()
     ]);
 }
