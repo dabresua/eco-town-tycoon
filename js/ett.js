@@ -1130,12 +1130,12 @@ function update() {
 
 function autoSaving() {
     if (!sandboxMode && autoSave) {
+        if (autoSaveCounter == 0) {
+            save();
+        }
         autoSaveCounter++;
         if (autoSaveCounter >= 60) {
             autoSaveCounter = 0;
-        }
-        if (autoSaveCounter == 0) {
-            save();
         }
     }
 }
