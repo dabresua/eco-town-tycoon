@@ -1042,6 +1042,8 @@ gamePause = false;
 forestersPause = false;
 sandboxMode = false;
 lastSandboxMode = false;
+autoSave = false;
+autoSaveCounter = 0;
 
 /**
  * Function called after the body loads
