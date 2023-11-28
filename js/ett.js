@@ -720,6 +720,8 @@ function getWorldProgressBar() {
         span.innerHTML = "Foresters paused";
     } else if (sandboxMode) {
         span.innerHTML = "Sandbox Mode!!!";
+    } else if (autoSave && autoSaveCounter < 3) {
+        span.innerHTML = "Progress saved";
     } else {
         span.innerHTML = "Running";
     }
