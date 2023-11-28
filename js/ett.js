@@ -1119,6 +1119,18 @@ function update() {
     }
 }
 
+function autoSaving() {
+    if (!sandboxMode && autoSave) {
+        autoSaveCounter++;
+        if (autoSaveCounter >= 60) {
+            autoSaveCounter = 0;
+        }
+        if (autoSaveCounter == 0) {
+            save();
+        }
+    }
+}
+
 /**
  * Gets the storage full key for a certain parameter
  * @param {string} param 
