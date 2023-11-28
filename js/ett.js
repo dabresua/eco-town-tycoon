@@ -1130,12 +1130,12 @@ function update() {
 
 function autoSaving() {
     if (!sandboxMode && autoSave) {
+        if (autoSaveCounter == 0) {
+            save();
+        }
         autoSaveCounter++;
         if (autoSaveCounter >= 60) {
             autoSaveCounter = 0;
-        }
-        if (autoSaveCounter == 0) {
-            save();
         }
     }
 }
@@ -1209,6 +1209,10 @@ function save() {
         getStorageKey("theme"),
         theme
     );
+    localStorage.setItem(
+        getStorageKey("autoSave"),
+        autoSave
+    );
 }
 
 /**
@@ -1255,6 +1259,7 @@ function load() {
 	forestEvolutionCounter = loadKeyDefault("forestEvolutionCounter", forestEvolutionCounter);
     theme = loadKeyDefault("theme", theme);
     setTheme();
+    autoSave = loadKeyDefault("autoSave", autoSave);
 }
 
 /* --------------- Dark mode --------------- */
