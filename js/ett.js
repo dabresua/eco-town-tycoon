@@ -23,13 +23,19 @@ function getForestSize() {
 }
 
 /**
- * Cuts down a tree from the forest
+ * Plants or cuts down a tree from the forest
+ * @param {number} n times
  */
-function cutDownTree() {
-    if ((buildingsSize + wastelandSize) < worldSize) {
-        wastelandSize++;
-        updateWorldProgressBar();
+function actTrees(n, plant) {
+    const maxWS = worldSize - buildingsSize;
+    for (let index = 0; index < n; index++) {
+        if (plant && wastelandSize > 0) {
+            wastelandSize--;
+        } else if (!plant && wastelandSize < maxWS) {
+            wastelandSize++;
+        }
     }
+    updateWorldProgressBar();
 }
 
 /**
@@ -47,16 +53,6 @@ function zoneBuilding() {
     wastelandSize--;
     buildingsSize++;
     updateWorldProgressBar();
-}
-
-/**
- * Plants a tree in wasteland, regenerating the forest
- */
-function plantTree() {
-    if (wastelandSize > 0) {
-        wastelandSize--;
-        updateWorldProgressBar();
-    }
 }
 
 /* --------------- Forest capacity --------------- */
@@ -105,7 +101,7 @@ function getManualTime(resource) {
  */
 function manualProduce(res) {
     if ("wood" == res) {
-        cutDownTree();
+        actTrees(1, false);
     }
     producing = true;
     producingButton = res;
@@ -259,19 +255,22 @@ let buildings = {
 
 let forestEvolutionCounter = 0;
 
-function forestEvolution() {
-	forestEvolutionCounter -= buildings.lumberjack;
+/**
+ * Evolves the forest
+ * @param {number} n times
+ */
+function forestEvolution(n) {
+	forestEvolutionCounter -= n * buildings.lumberjack;
 	if (!forestersPause) {
-		forestEvolutionCounter += 3 * buildings.forester;
+		forestEvolutionCounter += 3 * n * buildings.forester;
 	}
 	// TODO: add var to change the relationship between lumberjack and forester
-	if (forestEvolutionCounter >= 10) {
-		plantTree();
-		forestEvolutionCounter = 0;
-	} else if (forestEvolutionCounter <= -10) {
-		cutDownTree();
-		forestEvolutionCounter = 0;
-	}
+    times = Math.floor(Math.abs(forestEvolutionCounter) / 10);
+    sign = forestEvolutionCounter > 0;
+    if (times > 0) {
+        forestEvolutionCounter %= 10;
+        actTrees(times, sign);
+    }
 }
 
 /**
@@ -301,12 +300,13 @@ function setProduction() {
 
 /**
  * Buildings production
+ * @param {number} n times to produce
  */
-function produce() {
+function produce(n) {
     for (const res in production) {
-        resources[res] += production[res];
+        resources[res] += n * production[res];
     }
-	forestEvolution();
+	forestEvolution(n);
 }
 
 /**
@@ -367,6 +367,7 @@ function getPage(pageElements) {
 function getPageSummary() {
     currentPage = "summary";
     return getPage([
+        createAlertOffline(),
         getResourcesTable(),
         getForestCapacityTable(),
         getBuildingsTable()
@@ -565,9 +566,10 @@ function getPageConfig() {
                 0,
                 100,
                 buildings[building],
-                building,
+                [building],
                 buildingNames[building],
-                "60px"
+                "60px",
+                "inputBuildingsQCallback"
             ));
         }
         c2 = document.createElement("div");
@@ -596,9 +598,10 @@ function getPageConfig() {
                         -10,
                         10,
                         bbp[res],
-                        "buildingProd[" + bp + "]",
+                        [bp, res],
                         emojis[res],
-                        "80px"
+                        "80px",
+                        "inputBuildingsProdCallback"
                         )
                         );
                     }
@@ -999,11 +1002,22 @@ function getSwitch(fun, switchID, switchMsg, initial, disabled) {
 /* --------------- Inputs --------------- */
 
 /**
- * Callback for an input
+ * Callback for an input regarding building quantity
  * @param {number} val 
  * @param {string} building
  */
-function inputBuildingsCallback(val, building) {
+function inputBuildingsQCallback(val, building) {
+    buildings[building] = val;
+}
+
+/**
+ * Callback for an input regarding building production
+ * @param {number} val 
+ * @param {string} building
+ * @param {string} res
+ */
+function inputBuildingsProdCallback(val, building, res) {
+    buildingProd[building][res] = val;
     buildings[building] = val;
 }
 
@@ -1012,12 +1026,13 @@ function inputBuildingsCallback(val, building) {
  * @param {number} min 
  * @param {number} max 
  * @param {number} def 
- * @param {string} varName 
+ * @param {Array} varArray 
  * @param {string} text 
  * @param {string} mw 
+ * @param {string} fun 
  * @returns {htmlElement}
  */
-function getNumberInput(min, max, def, varName, text, mw) {
+function getNumberInput(min, max, def, varArray, text, mw, fun) {
     div = document.createElement("div");
     div.className = "input-group input-group-sm mb-3";
     group = document.createElement("div");
@@ -1036,10 +1051,17 @@ function getNumberInput(min, max, def, varName, text, mw) {
     myInput.setAttribute("min", min);
     myInput.setAttribute("max", max);
     myInput.setAttribute("value", def);
-    myInput.setAttribute(
-        "oninput",
-        "inputBuildingsCallback(this.value,'" + varName + "')"
-    );
+    onInputVal = fun + "(this.value,";
+    first = true;
+    for (const value of varArray) {
+        if (!first) {
+            onInputVal += ",";
+        }
+        onInputVal += "'" + value + "'";
+        first = false;
+    }
+    onInputVal += ")";
+    myInput.setAttribute("oninput", onInputVal);
     div.appendChild(myInput);
     return div;
 }
@@ -1052,6 +1074,9 @@ sandboxMode = false;
 lastSandboxMode = false;
 autoSave = false;
 autoSaveCounter = 0;
+savedTimestamp = 0;
+loadTimestamp = 0;
+offlineProdCounter = 0;
 
 /**
  * Function called after the body loads
@@ -1060,9 +1085,19 @@ function init() {
     // Load saved data
     load();
     // Calculate offline time and resources
-    // TODO
+    produceOffline();
     // Run the main loop
     run();
+}
+
+
+/**
+ * Function to simulate the production while offline
+ */
+function produceOffline() {
+    diffTime = loadTimestamp - savedTimestamp;
+    secs = Math.floor(diffTime/1000);
+    produce(secs);
 }
 
 /**
@@ -1071,7 +1106,7 @@ function init() {
 function run() {
     setProduction();
     if (!gamePause) {
-        produce();
+        produce(1);
         updateButton();
         update();
     }
@@ -1212,6 +1247,11 @@ function save() {
     localStorage.setItem(
         getStorageKey("autoSave"),
         autoSave
+        );
+    savedTimestamp = Date.now();
+    localStorage.setItem(
+        getStorageKey("savedTimestamp"),
+        savedTimestamp
     );
 }
 
@@ -1260,6 +1300,13 @@ function load() {
     theme = loadKeyDefault("theme", theme);
     setTheme();
     autoSave = loadKeyDefault("autoSave", autoSave);
+    if (autoSave) {
+        autoSaveCounter = 1;
+    }
+    savedTimestamp = loadKeyDefault("savedTimestamp", savedTimestamp);
+    if (0 != savedTimestamp) {
+        loadTimestamp = Date.now();
+    }
 }
 
 /* --------------- Dark mode --------------- */
@@ -1290,4 +1337,42 @@ function setTheme() {
         document.getElementById("MenuNavBar").className = "navbar navbar-expand-lg navbar-light bg-light";
     }
     updateWorldProgressBar();
+}
+
+/* --------------- Alerts --------------- */
+
+/**
+ * Generate an alert given the level and the message
+ * @param {string} level 
+ * @param {string} message 
+ * @returns {htmlElement}
+ */
+function getAlert(level, message) {
+    alert = document.createElement("div");
+    alert.className = "alert alert-" + level;
+    alert.innerHTML += message;
+    return alert;
+}
+
+/**
+ * Function to create alert to inform the user what happened while offline
+ * @returns {htmlElement}
+ */
+function createAlertOffline() {
+    if (0 == savedTimestamp || 0 == loadTimestamp || offlineProdCounter > 10) {
+        return document.createElement("div");
+    }
+    offlineProdCounter++;
+    diffTime = loadTimestamp - savedTimestamp;
+    secs = Math.floor(diffTime/1000);
+    dateObj = new Date(diffTime);
+    msg = "<p>Offline during <strong>" + dateObj.getUTCHours() + ":";
+    msg += dateObj.getUTCMinutes() + ":" +dateObj.getUTCSeconds() + ".</strong></p>";
+    msg += "<p>Produced: ";
+    for (const res in production) {
+        msg += (formatterRes.format(secs * production[res])).toString();
+        msg += emojis[res] + " ";
+    }
+    msg += "</p>"
+    return getAlert("info", msg);
 }
