@@ -999,11 +999,22 @@ function getSwitch(fun, switchID, switchMsg, initial, disabled) {
 /* --------------- Inputs --------------- */
 
 /**
- * Callback for an input
+ * Callback for an input regarding building quantity
  * @param {number} val 
  * @param {string} building
  */
-function inputBuildingsCallback(val, building) {
+function inputBuildingsQCallback(val, building) {
+    buildings[building] = val;
+}
+
+/**
+ * Callback for an input regarding building production
+ * @param {number} val 
+ * @param {string} building
+ * @param {string} res
+ */
+function inputBuildingsProdCallback(val, building, res) {
+    buildingProd[building][res] = val;
     buildings[building] = val;
 }
 
