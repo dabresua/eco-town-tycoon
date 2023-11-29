@@ -1023,12 +1023,13 @@ function inputBuildingsProdCallback(val, building, res) {
  * @param {number} min 
  * @param {number} max 
  * @param {number} def 
- * @param {string} varName 
+ * @param {Array} varArray 
  * @param {string} text 
  * @param {string} mw 
+ * @param {string} fun 
  * @returns {htmlElement}
  */
-function getNumberInput(min, max, def, varName, text, mw) {
+function getNumberInput(min, max, def, varArray, text, mw, fun) {
     div = document.createElement("div");
     div.className = "input-group input-group-sm mb-3";
     group = document.createElement("div");
@@ -1047,10 +1048,17 @@ function getNumberInput(min, max, def, varName, text, mw) {
     myInput.setAttribute("min", min);
     myInput.setAttribute("max", max);
     myInput.setAttribute("value", def);
-    myInput.setAttribute(
-        "oninput",
-        "inputBuildingsCallback(this.value,'" + varName + "')"
-    );
+    onInputVal = fun + "(this.value,";
+    first = true;
+    for (const value of varArray) {
+        if (!first) {
+            onInputVal += ",";
+        }
+        onInputVal += "'" + value + "'";
+        first = false;
+    }
+    onInputVal += ")";
+    myInput.setAttribute("oninput", onInputVal);
     div.appendChild(myInput);
     return div;
 }
