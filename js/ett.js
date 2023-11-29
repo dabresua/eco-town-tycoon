@@ -367,6 +367,7 @@ function getPage(pageElements) {
 function getPageSummary() {
     currentPage = "summary";
     return getPage([
+        createAlertOffline(),
         getResourcesTable(),
         getForestCapacityTable(),
         getBuildingsTable()
@@ -1075,6 +1076,7 @@ autoSave = false;
 autoSaveCounter = 0;
 savedTimestamp = 0;
 loadTimestamp = 0;
+offlineProdCounter = 0;
 
 /**
  * Function called after the body loads
@@ -1340,4 +1342,27 @@ function getAlert(level, message) {
     alert.className = "alert alert-" + level;
     alert.innerHTML += message;
     return alert;
+}
+
+/**
+ * Function to create alert to inform the user what happened while offline
+ * @returns {htmlElement}
+ */
+function createAlertOffline() {
+    if (0 == savedTimestamp || 0 == loadTimestamp || offlineProdCounter > 10) {
+        return document.createElement("div");
+    }
+    offlineProdCounter++;
+    diffTime = loadTimestamp - savedTimestamp;
+    secs = Math.floor(diffTime/1000);
+    dateObj = new Date(diffTime);
+    msg = "<p>Offline during <strong>" + dateObj.getUTCHours() + ":";
+    msg += dateObj.getUTCMinutes() + ":" +dateObj.getUTCSeconds() + ".</strong></p>";
+    msg += "<p>Produced: ";
+    for (const res in production) {
+        msg += (formatterRes.format(secs * production[res])).toString();
+        msg += emojis[res] + " ";
+    }
+    msg += "</p>"
+    return getAlert("info", msg);
 }
