@@ -300,12 +300,13 @@ function setProduction() {
 
 /**
  * Buildings production
+ * @param {number} n times to produce
  */
-function produce() {
+function produce(n) {
     for (const res in production) {
-        resources[res] += production[res];
+        resources[res] += n * production[res];
     }
-	forestEvolution();
+	forestEvolution(n);
 }
 
 /**
@@ -1091,7 +1092,7 @@ function init() {
 function run() {
     setProduction();
     if (!gamePause) {
-        produce();
+        produce(1);
         updateButton();
         update();
     }
