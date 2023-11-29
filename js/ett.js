@@ -23,13 +23,19 @@ function getForestSize() {
 }
 
 /**
- * Cuts down a tree from the forest
+ * Plants or cuts down a tree from the forest
+ * @param {number} n times
  */
-function cutDownTree() {
-    if ((buildingsSize + wastelandSize) < worldSize) {
-        wastelandSize++;
-        updateWorldProgressBar();
+function actTrees(n, plant) {
+    const maxWS = worldSize - buildingsSize;
+    for (let index = 0; index < n; index++) {
+        if (plant && wastelandSize > 0) {
+            wastelandSize--;
+        } else if (!plant && wastelandSize < maxWS) {
+            wastelandSize++;
+        }
     }
+    updateWorldProgressBar();
 }
 
 /**
@@ -47,16 +53,6 @@ function zoneBuilding() {
     wastelandSize--;
     buildingsSize++;
     updateWorldProgressBar();
-}
-
-/**
- * Plants a tree in wasteland, regenerating the forest
- */
-function plantTree() {
-    if (wastelandSize > 0) {
-        wastelandSize--;
-        updateWorldProgressBar();
-    }
 }
 
 /* --------------- Forest capacity --------------- */
@@ -105,7 +101,7 @@ function getManualTime(resource) {
  */
 function manualProduce(res) {
     if ("wood" == res) {
-        cutDownTree();
+        actTrees(1, false);
     }
     producing = true;
     producingButton = res;
