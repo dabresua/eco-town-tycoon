@@ -1326,3 +1326,18 @@ function setTheme() {
     }
     updateWorldProgressBar();
 }
+
+/* --------------- Alerts --------------- */
+
+/**
+ * Generate an alert given the level and the message
+ * @param {string} level 
+ * @param {string} message 
+ * @returns {htmlElement}
+ */
+function getAlert(level, message) {
+    alert = document.createElement("div");
+    alert.className = "alert alert-" + level;
+    alert.innerHTML += message;
+    return alert;
+}
