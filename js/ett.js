@@ -255,19 +255,22 @@ let buildings = {
 
 let forestEvolutionCounter = 0;
 
-function forestEvolution() {
-	forestEvolutionCounter -= buildings.lumberjack;
+/**
+ * Evolves the forest
+ * @param {number} n times
+ */
+function forestEvolution(n) {
+	forestEvolutionCounter -= n * buildings.lumberjack;
 	if (!forestersPause) {
-		forestEvolutionCounter += 3 * buildings.forester;
+		forestEvolutionCounter += 3 * n * buildings.forester;
 	}
 	// TODO: add var to change the relationship between lumberjack and forester
-	if (forestEvolutionCounter >= 10) {
-		plantTree();
-		forestEvolutionCounter = 0;
-	} else if (forestEvolutionCounter <= -10) {
-		cutDownTree();
-		forestEvolutionCounter = 0;
-	}
+    times = Math.floor(Math.abs(forestEvolutionCounter) / 10);
+    sign = forestEvolutionCounter > 0;
+    if (times > 0) {
+        forestEvolutionCounter %= 10;
+        actTrees(times, sign);
+    }
 }
 
 /**
