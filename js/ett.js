@@ -1085,9 +1085,19 @@ function init() {
     // Load saved data
     load();
     // Calculate offline time and resources
-    // TODO
+    produceOffline();
     // Run the main loop
     run();
+}
+
+
+/**
+ * Function to simulate the production while offline
+ */
+function produceOffline() {
+    diffTime = loadTimestamp - savedTimestamp;
+    secs = Math.floor(diffTime/1000);
+    produce(secs);
 }
 
 /**
