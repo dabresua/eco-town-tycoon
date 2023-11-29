@@ -1073,6 +1073,8 @@ sandboxMode = false;
 lastSandboxMode = false;
 autoSave = false;
 autoSaveCounter = 0;
+savedTimestamp = 0;
+loadTimestamp = 0;
 
 /**
  * Function called after the body loads
@@ -1233,6 +1235,11 @@ function save() {
     localStorage.setItem(
         getStorageKey("autoSave"),
         autoSave
+        );
+    savedTimestamp = Date.now();
+    localStorage.setItem(
+        getStorageKey("savedTimestamp"),
+        savedTimestamp
     );
 }
 
@@ -1281,6 +1288,13 @@ function load() {
     theme = loadKeyDefault("theme", theme);
     setTheme();
     autoSave = loadKeyDefault("autoSave", autoSave);
+    if (autoSave) {
+        autoSaveCounter = 1;
+    }
+    savedTimestamp = loadKeyDefault("savedTimestamp", savedTimestamp);
+    if (0 != savedTimestamp) {
+        loadTimestamp = Date.now();
+    }
 }
 
 /* --------------- Dark mode --------------- */
