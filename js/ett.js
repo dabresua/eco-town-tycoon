@@ -565,9 +565,10 @@ function getPageConfig() {
                 0,
                 100,
                 buildings[building],
-                building,
+                [building],
                 buildingNames[building],
-                "60px"
+                "60px",
+                "inputBuildingsQCallback"
             ));
         }
         c2 = document.createElement("div");
@@ -596,9 +597,10 @@ function getPageConfig() {
                         -10,
                         10,
                         bbp[res],
-                        "buildingProd[" + bp + "]",
+                        [bp, res],
                         emojis[res],
-                        "80px"
+                        "80px",
+                        "inputBuildingsProdCallback"
                         )
                         );
                     }
