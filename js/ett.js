@@ -205,12 +205,12 @@ let production = {
 /* --------------- buildings --------------- */
 const buildingCosts = {
     houseI: {wood: 10},
-    farm: {veggies: 10, unemployed: 2},
+    farm: {wood: 10, unemployed: 2},
     lumberjack: {wood: 10, unemployed: 1},
     forester: {wood: 10, unemployed: 1},
     hunter: {wood: 10, unemployed: 1},
     collector: {wood: 10, unemployed: 1},
-    druid: {wood:1, firewood: 5, meat: 1, veggies: 1, unemployed: 1},
+    druid: {wood:10, firewood: 5, meat: 1, veggies: 1, unemployed: 1},
 };
 
 const buildingNames = {
