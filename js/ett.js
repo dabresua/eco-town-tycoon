@@ -11,7 +11,7 @@ const formatterProd = new Intl.NumberFormat('en-US', {
 
 /* --------------- World size --------------- */
 const worldSize = 200;
-let buildingsSize = 12; // Initial for a single house
+let buildingsSize = 2; // Initial for a single house and lumberjack
 let wastelandSize = 20;
 
 /**
@@ -165,12 +165,12 @@ function getHousingTech() {
 
 /* --------------- resources --------------- */
 let resources = {
-    wood: 30,
-    firewood: 10,
-    meat: 5,
-    veggies: 10,
-    medicine: 5,
-    villagers: 6,
+    wood: 0,
+    firewood: 15,
+    meat: 0.3,
+    veggies: 3,
+    medicine: 0.3,
+    villagers: 1,
     unemployed: 0,
 };
 
@@ -205,12 +205,12 @@ let production = {
 /* --------------- buildings --------------- */
 const buildingCosts = {
     houseI: {wood: 10},
-    farm: {veggies: 10, unemployed: 2},
+    farm: {wood: 10, unemployed: 2},
     lumberjack: {wood: 10, unemployed: 1},
     forester: {wood: 10, unemployed: 1},
     hunter: {wood: 10, unemployed: 1},
     collector: {wood: 10, unemployed: 1},
-    druid: {wood:1, firewood: 5, meat: 1, veggies: 1, unemployed: 1},
+    druid: {wood:10, firewood: 5, meat: 1, veggies: 1, unemployed: 1},
 };
 
 const buildingNames = {
@@ -244,13 +244,13 @@ const buildingProd = {
 };
 
 let buildings = {
-    houseI: 7,
-    farm: 1, // 2
-    lumberjack: 1, // 1
-    forester: 1, // 1
-    hunter: 1, // 1
-    collector: 1, // 1
-    druid: 1, // 1
+    houseI: 1,
+    farm: 0,
+    lumberjack: 1,
+    forester: 0,
+    hunter: 0,
+    collector: 0,
+    druid: 0,
 };
 
 let forestEvolutionCounter = 0;
