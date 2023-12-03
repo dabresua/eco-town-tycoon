@@ -2,6 +2,9 @@
 
 - [1. Table of contents](#1-table-of-contents)
 - [2. Eco Town Tycoon](#2-eco-town-tycoon)
+  - [2.1. Goal](#21-goal)
+  - [2.2. Game over](#22-game-over)
+  - [2.3. First steps](#23-first-steps)
 - [3. Menu](#3-menu)
   - [3.1. Main menu](#31-main-menu)
   - [3.2. World composition](#32-world-composition)
@@ -30,6 +33,18 @@
 # 2. Eco Town Tycoon
 
 A a game built in javascript that consists in growing the population to the maximum given the ecological restraints of the environment.
+
+## 2.1. Goal
+
+Your goal is to build 60 houses which is the maximum houses the forest can hold.
+
+## 2.2. Game over
+
+The game ends if some resource gets to 0.
+
+## 2.3. First steps
+
+Initially, you have a house, a lumberjack and resources for 5 minutes. You'll have to build houses to provide shelter for new villagers and to provide those villagers with resources. Check the town chapter for more information about buildings.
 
 # 3. Menu
 
