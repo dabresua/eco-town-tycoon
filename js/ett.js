@@ -305,6 +305,11 @@ function setProduction() {
 function produce(n) {
     for (const res in production) {
         resources[res] += n * production[res];
+        if (resources[res] < 0) {
+            var modal = document.getElementById("gameOverModal");
+            modal.style.display = "block";
+            gameOver = true;
+        }
     }
 	forestEvolution(n);
 }
@@ -1067,7 +1072,7 @@ function getNumberInput(min, max, def, varArray, text, mw, fun) {
 }
 
 /* --------------- Engine --------------- */
-
+gameOver = false;
 gamePause = false;
 forestersPause = false;
 sandboxMode = false;
@@ -1105,7 +1110,7 @@ function produceOffline() {
  */
 function run() {
     setProduction();
-    if (!gamePause) {
+    if (!gamePause && !gameOver) {
         produce(1);
         updateButton();
         update();
