@@ -11,7 +11,7 @@ const formatterProd = new Intl.NumberFormat('en-US', {
 
 /* --------------- World size --------------- */
 const worldSize = 200;
-let buildingsSize = 12; // Initial for a single house
+let buildingsSize = 2; // Initial for a single house and lumberjack
 let wastelandSize = 20;
 
 /**
@@ -244,13 +244,13 @@ const buildingProd = {
 };
 
 let buildings = {
-    houseI: 7,
-    farm: 1, // 2
-    lumberjack: 1, // 1
-    forester: 1, // 1
-    hunter: 1, // 1
-    collector: 1, // 1
-    druid: 1, // 1
+    houseI: 1,
+    farm: 0,
+    lumberjack: 1,
+    forester: 0,
+    hunter: 0,
+    collector: 0,
+    druid: 0,
 };
 
 let forestEvolutionCounter = 0;
