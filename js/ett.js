@@ -1260,6 +1260,7 @@ function save() {
  */
 function clearKeys() {
     localStorage.clear();
+    location.reload();
 }
 
 /**
