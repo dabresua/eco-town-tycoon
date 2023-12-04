@@ -234,7 +234,7 @@ const buildingInfo = {
 };
 
 const buildingProd = {
-    houseI: {firewood: -0.05, meat: -0.001, veggies: -0.01, medicine: -0.001},
+    houseI: {firewood: -0.15, meat: -0.0015, veggies: -0.015, medicine: -0.005},
     farm: {veggies: 0.1},
     lumberjack: {wood: 0.1},
     forester: {},
