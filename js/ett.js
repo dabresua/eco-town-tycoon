@@ -166,10 +166,10 @@ function getHousingTech() {
 /* --------------- resources --------------- */
 let resources = {
     wood: 0,
-    firewood: 15,
-    meat: 0.3,
-    veggies: 3,
-    medicine: 0.3,
+    firewood: 45,
+    meat: 0.45,
+    veggies: 4.5,
+    medicine: 1.5,
     villagers: 1,
     unemployed: 0,
 };
